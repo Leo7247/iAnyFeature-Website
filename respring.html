@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respring Portal</title>
+    <title>Respring Portal - iAnyFeature</title>
     <link rel="icon" href="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
@@ -12,7 +12,7 @@
     <style>
         body {
             margin: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             height: 100vh; 
             display: flex; 
             justify-content: center; 
@@ -21,6 +21,7 @@
             background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
             background-size: 400% 400%; 
             animation: gradientBG 15s ease infinite;
+            position: relative;
         }
         
         @keyframes gradientBG { 
@@ -33,6 +34,7 @@
             position: absolute; 
             top: 25px; 
             left: 25px; 
+            z-index: 10;
         }
         
         .header a { 
@@ -44,6 +46,9 @@
             border-radius: 20px; 
             backdrop-filter: blur(5px); 
             transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .header a:hover { 
@@ -62,6 +67,7 @@
             text-align: center; 
             position: relative; 
             overflow: hidden;
+            z-index: 5;
         }
         
         .card::before {
@@ -91,6 +97,10 @@
             color: #1c1c1e; 
             font-size: 1.8rem; 
             letter-spacing: -0.5px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .input-group { 
@@ -207,6 +217,34 @@
             color: #34c759; 
             display: block !important; 
         }
+
+        footer {
+            width: 100%; 
+            position: absolute; 
+            bottom: 0; 
+            padding: 30px 0; 
+            text-align: center; 
+            z-index: 10;
+        }
+
+        .social-links {
+            display: flex; 
+            justify-content: center; 
+            gap: 30px; 
+            font-size: 26px;
+        }
+
+        .social-links a {
+            color: white; 
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            opacity: 0.9;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.15);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -217,6 +255,7 @@
         </a>
     </div>
 
+    <!-- Login / Register Section -->
     <div class="card" id="auth-section">
         <div class="card-content">
             <h2><i class="fa-solid fa-shield-halved" style="color: #007aff;"></i> Secure Portal</h2>
@@ -243,6 +282,7 @@
         </div>
     </div>
 
+    <!-- Dashboard Section -->
     <div class="card hidden" id="app-section">
         <div class="card-content">
             <h2><i class="fa-solid fa-bolt" style="color: #ffcc00;"></i> Dashboard</h2>
@@ -260,7 +300,17 @@
 
     <iframe id="frame" style="width: 1px;height: 1px; border: none;" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
+    <footer>
+        <div class="social-links">
+            <a href="https://x.com/LeoLam1169458" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://discord.gg/vfAfChYeCc" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="letschat://invite?type=group&id=0Pwwaeo1CJWj9TTzwrN5" title="LetsChat"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="https://github.com/Leo7247/iAnyFeature" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+    </footer>
+
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBkjcjiwBh1dmEUektJhCHE2nRwjhtCeP4",
             authDomain: "ianyfeature.firebaseapp.com",
@@ -290,6 +340,7 @@
             document.getElementById('app-section').classList.toggle('hidden', !isLoggedIn);
         };
 
+        // Listen for authentication state changes
         auth.onAuthStateChanged(user => {
             if (user && user.emailVerified) {
                 toggleUI(true);
@@ -298,6 +349,7 @@
             }
         });
 
+        // Handle Login & Registration
         async function handleAuth(action) {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -321,6 +373,7 @@
             }
         }
 
+        // Handle Password Reset
         async function resetPassword() {
             const email = document.getElementById('email').value;
             if (!email) return showMsg("Please enter your email address in the field above to reset your password.", "error");
@@ -332,10 +385,12 @@
             }
         }
 
+        // Handle Logout
         function logout() { 
             auth.signOut(); 
         }
 
+        // Trigger iOS Respring via hidden iframe script injection
         function triggerRespring() {
             const frame = document.getElementById('frame');
             const respringScript = `
@@ -361,7 +416,7 @@
                 </body>
                 </html>
             `;
-            frame.srcdoc = respringScript; //[span_0](start_span)[span_0](end_span)
+            frame.srcdoc = respringScript;
         }
     </script>
 </body>
