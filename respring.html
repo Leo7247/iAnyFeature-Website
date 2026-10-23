@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
+        :root { --primary: #007aff; }
         body {
             margin: 0; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -22,6 +23,7 @@
             background-size: 400% 400%; 
             animation: gradientBG 15s ease infinite;
             position: relative;
+            overflow-x: hidden;
         }
         
         @keyframes gradientBG { 
@@ -36,7 +38,6 @@
             left: 25px; 
             z-index: 10;
         }
-        
         .header a { 
             text-decoration: none; 
             color: white; 
@@ -50,10 +51,44 @@
             align-items: center;
             gap: 8px;
         }
-        
-        .header a:hover { 
-            background: rgba(0,0,0,0.4); 
+        .header a:hover { background: rgba(0,0,0,0.4); }
+
+        .header-menu {
+            position: absolute; 
+            top: 25px; 
+            right: 25px; 
+            z-index: 10;
         }
+        .header-menu button {
+            background: rgba(0,0,0,0.2); 
+            border: none;
+            color: white; 
+            padding: 10px 15px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(5px); 
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .header-menu button:hover { background: rgba(0,0,0,0.4); }
+
+        /* Premium iOS Menu Styles */
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.3s ease; z-index: 998; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+        .menu-overlay.open { opacity: 1; visibility: visible; }
+        
+        .nav-menu { position: fixed; top: 0; right: -300px; width: 300px; height: 100vh; background: #ffffff; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; z-index: 999; }
+        .nav-menu.open { right: 0; }
+        
+        .menu-header { height: 80px; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; border-bottom: 1px solid #f0f0f5; }
+        .close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--primary); padding: 0; transition: 0.2s; }
+        
+        .nav-menu a { padding: 20px 24px; text-decoration: none; color: #1d1d1f; font-weight: 500; font-size: 1.1rem; border-bottom: 1px solid #f0f0f5; display: flex; align-items: center; gap: 16px; transition: background 0.2s; }
+        .nav-menu a:hover { background: #f9f9fb; }
+        .nav-menu a i { width: 24px; text-align: center; font-size: 1.2rem; }
+        .nav-menu a.danger-link { color: #ff3b30; }
+        .nav-menu a.danger-link i { color: #ff3b30; }
         
         .card {
             background: rgba(255, 255, 255, 0.85); 
@@ -83,177 +118,65 @@
             z-index: 0;
         }
         
-        @keyframes rotateGlow { 
-            100% { transform: rotate(360deg); } 
-        }
+        @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
         
-        .card-content { 
-            position: relative; 
-            z-index: 1; 
-        }
+        .card-content { position: relative; z-index: 1; }
         
-        h2 { 
-            margin-top: 0; 
-            color: #1c1c1e; 
-            font-size: 1.8rem; 
-            letter-spacing: -0.5px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
+        h2 { margin-top: 0; color: #1c1c1e; font-size: 1.8rem; letter-spacing: -0.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
-        .input-group { 
-            position: relative; 
-            margin: 15px 0; 
-        }
+        .input-group { position: relative; margin: 15px 0; }
+        .input-group i { position: absolute; left: 15px; top: 15px; color: #8e8e93; }
         
-        .input-group i { 
-            position: absolute; 
-            left: 15px; 
-            top: 15px; 
-            color: #8e8e93; 
-        }
+        input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; box-sizing: border-box; outline: none; background: rgba(255,255,255,0.9); font-size: 1rem; transition: 0.3s; }
+        input:focus { border-color: #007aff; box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); }
         
-        input {
-            width: 100%; 
-            padding: 14px 14px 14px 45px; 
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 12px; 
-            box-sizing: border-box; 
-            outline: none; 
-            background: rgba(255,255,255,0.9);
-            font-size: 1rem; 
-            transition: 0.3s;
-        }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         
-        input:focus { 
-            border-color: #007aff; 
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); 
-        }
+        .card button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         
-        .btn-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            margin-top: 20px; 
-        }
+        .btn-login { background: #007aff; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); }
+        .btn-register { background: #34c759; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3); }
+        .btn-respring { background: #ff3b30; box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3); }
+        .btn-logout { background: #8e8e93; }
         
-        button {
-            width: 100%; 
-            padding: 14px; 
-            border: none; 
-            border-radius: 12px; 
-            font-size: 1rem;
-            color: white; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px;
-        }
+        .card button:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
-        .btn-login { 
-            background: #007aff; 
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); 
-        }
+        .forgot-pass { display: block; margin-top: 15px; font-size: 0.9rem; color: #007aff; text-decoration: none; cursor: pointer; font-weight: 500; }
+        .forgot-pass:hover { text-decoration: underline; }
         
-        .btn-register { 
-            background: #34c759; 
-            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3); 
-        }
+        .hidden { display: none !important; }
         
-        .btn-respring { 
-            background: #ff3b30; 
-            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3); 
-        }
-        
-        .btn-logout { 
-            background: #8e8e93; 
-        }
-        
-        button:hover { 
-            transform: translateY(-2px); 
-            filter: brightness(1.1); 
-        }
-        
-        .forgot-pass { 
-            display: block; 
-            margin-top: 15px; 
-            font-size: 0.9rem; 
-            color: #007aff; 
-            text-decoration: none; 
-            cursor: pointer; 
-            font-weight: 500; 
-        }
-        
-        .forgot-pass:hover { 
-            text-decoration: underline; 
-        }
-        
-        .hidden { 
-            display: none !important; 
-        }
-        
-        #message { 
-            margin-top: 15px; 
-            font-size: 0.9rem; 
-            font-weight: 500; 
-            border-radius: 8px; 
-            padding: 10px; 
-            display: none; 
-        }
-        
-        .msg-error { 
-            background: rgba(255, 59, 48, 0.1); 
-            color: #ff3b30; 
-            display: block !important; 
-        }
-        
-        .msg-success { 
-            background: rgba(52, 199, 89, 0.1); 
-            color: #34c759; 
-            display: block !important; 
-        }
+        #message { margin-top: 15px; font-size: 0.9rem; font-weight: 500; border-radius: 8px; padding: 10px; display: none; }
+        .msg-error { background: rgba(255, 59, 48, 0.1); color: #ff3b30; display: block !important; }
+        .msg-success { background: rgba(52, 199, 89, 0.1); color: #34c759; display: block !important; }
 
-        footer {
-            width: 100%; 
-            position: absolute; 
-            bottom: 0; 
-            padding: 30px 0; 
-            text-align: center; 
-            z-index: 10;
-        }
-
-        .social-links {
-            display: flex; 
-            justify-content: center; 
-            gap: 30px; 
-            font-size: 26px;
-        }
-
-        .social-links a {
-            color: white; 
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            opacity: 0.9;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.15);
-            opacity: 1;
-        }
+        footer { width: 100%; position: absolute; bottom: 0; padding: 30px 0; text-align: center; z-index: 10; }
+        .social-links { display: flex; justify-content: center; gap: 30px; font-size: 26px; }
+        .social-links a { color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0.9; }
+        .social-links a:hover { transform: scale(1.15); opacity: 1; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="index.html">
-            <i class="fa-solid fa-arrow-left"></i> Home
-        </a>
+        <a href="index.html" target="_self"><i class="fa-solid fa-arrow-left"></i> Home</a>
     </div>
+
+    <div class="header-menu">
+        <button onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+    <nav class="nav-menu" id="side-menu">
+        <div class="menu-header">
+            <button class="close-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        <a href="index.html" target="_self"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="apps.html" target="_self"><i class="fa-solid fa-mobile-screen"></i> My Apps</a>
+        <a href="altstore.html" target="_self"><i class="fa-solid fa-store"></i> AltStore Source</a>
+        <a href="help.html" target="_self"><i class="fa-solid fa-circle-question"></i> Help & Guides</a>
+        <a href="respring.html" class="danger-link" target="_self"><i class="fa-solid fa-power-off"></i> Respring Portal</a>
+    </nav>
 
     <!-- Login / Register Section -->
     <div class="card" id="auth-section">
@@ -304,12 +227,17 @@
         <div class="social-links">
             <a href="https://x.com/LeoLam1169458" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="https://discord.gg/vfAfChYeCc" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
-            <a href="letschat://invite?type=group&id=0Pwwaeo1CJWj9TTzwrN5" title="LetsChat"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="letschat://invite?type=group&id=0Pwwaeo1CJWj9TTzwrN5" target="_blank" title="LetsChat"><i class="fa-solid fa-comment-dots"></i></a>
             <a href="https://github.com/Leo7247/iAnyFeature" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
         </div>
     </footer>
 
     <script>
+        function toggleMenu() { 
+            document.getElementById('side-menu').classList.toggle('open'); 
+            document.getElementById('menu-overlay').classList.toggle('open');
+        }
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBkjcjiwBh1dmEUektJhCHE2nRwjhtCeP4",
