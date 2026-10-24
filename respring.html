@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respring Portal - iAnyFeature</title>
     <link rel="icon" href="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth-compat.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -74,7 +74,6 @@
         }
         .header-menu button:hover { background: rgba(0,0,0,0.4); }
 
-        /* Premium iOS Menu Styles */
         .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.3s ease; z-index: 998; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
         .menu-overlay.open { opacity: 1; visibility: visible; }
         
@@ -169,17 +168,16 @@
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <nav class="nav-menu" id="side-menu">
         <div class="menu-header">
-            <button class="close-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <button class="close-btn" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <a href="index.html" target="_self"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="apps.html" target="_self"><i class="fa-solid fa-mobile-screen"></i> My Apps</a>
-        <a href="altstore.html" target="_self"><i class="fa-solid fa-store"></i> AltStore Source</a>
-        <a href="games.html" target="_self"><i class="fa-solid fa-gamepad"></i> Game Console</a>
-        <a href="help.html" target="_self"><i class="fa-solid fa-circle-question"></i> Help & Guides</a>
-        <a href="respring.html" class="danger-link" target="_self"><i class="fa-solid fa-power-off"></i> Respring Portal</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="apps.html"><i class="fa-solid fa-mobile-screen"></i> My Apps</a>
+        <a href="altstore.html"><i class="fa-solid fa-store"></i> AltStore Source</a>
+        <a href="games.html"><i class="fa-solid fa-gamepad"></i> Game Console</a>
+        <a href="help.html"><i class="fa-solid fa-circle-question"></i> Help & Guides</a>
+        <a href="respring.html" class="danger-link"><i class="fa-solid fa-power-off"></i> Respring Portal</a>
     </nav>
 
-    <!-- Login / Register Section -->
     <div class="card" id="auth-section">
         <div class="card-content">
             <h2><i class="fa-solid fa-shield-halved" style="color: #007aff;"></i> Secure Portal</h2>
@@ -206,7 +204,6 @@
         </div>
     </div>
 
-    <!-- Dashboard Section -->
     <div class="card hidden" id="app-section">
         <div class="card-content">
             <h2><i class="fa-solid fa-bolt" style="color: #ffcc00;"></i> Dashboard</h2>
@@ -239,7 +236,6 @@
             document.getElementById('menu-overlay').classList.toggle('open');
         }
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBkjcjiwBh1dmEUektJhCHE2nRwjhtCeP4",
             authDomain: "ianyfeature.firebaseapp.com",
@@ -253,7 +249,6 @@
         const auth = firebase.auth();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-        // DO NOT FORGET to put your EmailJS Public Key and Template ID here
         emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
         const emailjsServiceID = "service_jn8hk3h";
         const emailjsTemplateID = "YOUR_EMAILJS_TEMPLATE_ID";
@@ -269,7 +264,6 @@
             document.getElementById('app-section').classList.toggle('hidden', !isLoggedIn);
         };
 
-        // Listen for authentication state changes
         auth.onAuthStateChanged(user => {
             if (user && user.emailVerified) {
                 toggleUI(true);
@@ -278,7 +272,6 @@
             }
         });
 
-        // Handle Login & Registration
         async function handleAuth(action) {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -302,7 +295,6 @@
             }
         }
 
-        // Handle Password Reset
         async function resetPassword() {
             const email = document.getElementById('email').value;
             if (!email) return showMsg("Please enter your email address in the field above to reset your password.", "error");
@@ -314,12 +306,10 @@
             }
         }
 
-        // Handle Logout
         function logout() { 
             auth.signOut(); 
         }
 
-        // Trigger iOS Respring via hidden iframe script injection
         function triggerRespring() {
             const frame = document.getElementById('frame');
             const respringScript = `
