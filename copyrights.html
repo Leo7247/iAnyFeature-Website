@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Copyrights - iAnyFeature</title>
+    <link rel="icon" href="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary: #007aff; }
+        body {
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; /* Aligned top for longer text */
+            flex-direction: column;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%; 
+            animation: gradientBG 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 100px; /* Space for footer */
+        }
+        
+        @keyframes gradientBG { 
+            0% {background-position: 0% 50%;} 
+            50% {background-position: 100% 50%;} 
+            100% {background-position: 0% 50%;} 
+        }
+        
+        .header { 
+            position: absolute; 
+            top: 25px; 
+            left: 25px; 
+            z-index: 10;
+        }
+        .header a { 
+            text-decoration: none; 
+            color: white; 
+            font-weight: bold; 
+            background: rgba(0,0,0,0.2); 
+            padding: 10px 15px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(5px); 
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header a:hover { background: rgba(0,0,0,0.4); }
+
+        .header-menu {
+            position: absolute; 
+            top: 25px; 
+            right: 25px; 
+            z-index: 10;
+        }
+        .header-menu button {
+            background: rgba(0,0,0,0.2); 
+            border: none;
+            color: white; 
+            padding: 10px 15px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(5px); 
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .header-menu button:hover { background: rgba(0,0,0,0.4); }
+
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.3s ease; z-index: 998; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+        .menu-overlay.open { opacity: 1; visibility: visible; }
+        
+        .nav-menu { position: fixed; top: 0; right: -300px; width: 300px; height: 100vh; background: #ffffff; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; z-index: 999; overflow-y: auto; }
+        .nav-menu.open { right: 0; }
+        
+        .menu-header { height: 80px; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; border-bottom: 1px solid #f0f0f5; }
+        .close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--primary); padding: 0; transition: 0.2s; }
+        
+        .nav-menu a { padding: 20px 24px; text-decoration: none; color: #1d1d1f; font-weight: 500; font-size: 1.1rem; border-bottom: 1px solid #f0f0f5; display: flex; align-items: center; gap: 16px; transition: background 0.2s; }
+        .nav-menu a:hover { background: #f9f9fb; }
+        .nav-menu a i { width: 24px; text-align: center; font-size: 1.2rem; }
+        .nav-menu a.danger-link { color: #ff3b30; }
+        .nav-menu a.danger-link i { color: #ff3b30; }
+        
+        /* GitHub-style Markdown Container */
+        .markdown-container {
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.5);
+            width: 90%; 
+            max-width: 800px; 
+            margin: 100px auto 40px auto; /* Margin top to clear header */
+            text-align: left; 
+            color: #24292e;
+            line-height: 1.6;
+        }
+
+        .markdown-container h1 {
+            font-size: 2em;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        .markdown-container h3 {
+            font-size: 1.25em;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .markdown-container p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-container ul {
+            padding-left: 2em;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-container li {
+            margin-bottom: 8px;
+        }
+
+        .markdown-container strong {
+            font-weight: 600;
+        }
+
+        footer { width: 100%; position: absolute; bottom: 0; padding: 30px 0; text-align: center; z-index: 10; }
+        .social-links { display: flex; justify-content: center; gap: 30px; font-size: 26px; }
+        .social-links a { color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0.9; }
+        .social-links a:hover { transform: scale(1.15); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" target="_self"><i class="fa-solid fa-arrow-left"></i> Home</a>
+    </div>
+
+    <div class="header-menu">
+        <button onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <!-- Sidebar Navigation Menu with Product Copyrights included -->
+    <nav class="nav-menu" id="side-menu">
+        <div class="menu-header">
+            <button class="close-btn" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="apps.html"><i class="fa-solid fa-mobile-screen"></i> My Apps</a>
+        <a href="altstore.html"><i class="fa-solid fa-store"></i> AltStore Source</a>
+        <a href="games.html"><i class="fa-solid fa-gamepad"></i> Game Console</a>
+        <a href="help.html"><i class="fa-solid fa-circle-question"></i> Help & Guides</a>
+        <a href="copyrights.html"><i class="fa-solid fa-copyright"></i> Product Copyrights</a>
+        <a href="respring.html" class="danger-link"><i class="fa-solid fa-power-off"></i> Respring Portal</a>
+    </nav>
+
+    <!-- Markdown Style Content Box -->
+    <div class="markdown-container">
+        <h1>LICENSE</h1>
+        
+        <p>Copyright (c) 2026 iAnyFeature</p>
+        <p>All rights reserved.</p>
+        <p>This software and its associated source code are protected by copyright law and international treaties. Unauthorized use, reproduction, or distribution of this software, or any portion of it, is strictly prohibited.</p>
+        <p>By accessing, viewing, or interacting with this repository, you agree to the following terms and conditions:</p>
+        
+        <h3>1. Prohibited Actions</h3>
+        <p>You are strictly prohibited from performing the following actions:</p>
+        <ul>
+            <li><strong>External Duplication:</strong> Downloading, copying, cloning, or duplicating the source code or any part of this software outside of the official GitHub platform.</li>
+            <li><strong>Modification:</strong> Modifying, altering, changing, tampering with, or creating derivative works based on this software or its source code.</li>
+            <li><strong>Distribution:</strong> Redistributing, sharing, publishing, hosting, mirroring, or selling this software, its source code, or its compiled parts anywhere else, online or offline.</li>
+        </ul>
+        
+        <h3>2. Permitted Use</h3>
+        <ul>
+            <li><strong>GitHub Interaction:</strong> You may view the source code, fork the repository within the GitHub platform for personal reference, and contribute to the original repository via Pull Requests, provided no code is taken outside of GitHub.</li>
+        </ul>
+        
+        <h3>3. Termination</h3>
+        <p>Any breach of this license automatically terminates your permission to view or interact with this software. The copyright holder reserves the right to take legal action or submit takedown notices (including DMCA notices) for any unauthorized distribution, modification, or external hosting of this software.</p>
+        
+        <h3>4. Disclaimer of Warranty</h3>
+        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://x.com/LeoLam1169458" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://discord.gg/vfAfChYeCc" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="letschat://invite?type=group&id=0Pwwaeo1CJWj9TTzwrN5" target="_blank" title="LetsChat"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="https://github.com/Leo7247/iAnyFeature" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { 
+            document.getElementById('side-menu').classList.toggle('open'); 
+            document.getElementById('menu-overlay').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
