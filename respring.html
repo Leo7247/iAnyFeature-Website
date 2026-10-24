@@ -135,11 +135,28 @@
         
         .btn-login { background: #007aff; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); }
         .btn-register { background: #34c759; box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3); }
+        .btn-google { background: #db4437; box-shadow: 0 4px 15px rgba(219, 68, 55, 0.3); }
         .btn-respring { background: #ff3b30; box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3); }
         .btn-logout { background: #8e8e93; }
         
         .card button:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 15px 0;
+            color: #8e8e93;
+            font-size: 0.9rem;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
         .forgot-pass { display: block; margin-top: 15px; font-size: 0.9rem; color: #007aff; text-decoration: none; cursor: pointer; font-weight: 500; }
         .forgot-pass:hover { text-decoration: underline; }
         
@@ -199,6 +216,13 @@
                     </button>
                 </div>
             </form>
+            
+            <div class="divider">OR</div>
+            
+            <button type="button" class="btn-google" onclick="handleGoogleAuth()">
+                <i class="fa-brands fa-google"></i> Sign in with Google
+            </button>
+
             <a class="forgot-pass" onclick="resetPassword()">Forgot Password?</a>
             <div id="message"></div>
         </div>
@@ -265,7 +289,8 @@
         };
 
         auth.onAuthStateChanged(user => {
-            if (user && user.emailVerified) {
+            // Updated to allow users who signed in with Google (which often auto-verifies email)
+            if (user && (user.emailVerified || user.providerData.some(p => p.providerId === 'google.com'))) {
                 toggleUI(true);
             } else {
                 toggleUI(false);
@@ -292,6 +317,16 @@
                 }
             } catch (error) { 
                 showMsg(error.message.replace('Firebase:', '').trim(), "error"); 
+            }
+        }
+
+        async function handleGoogleAuth() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+                showMsg("Successfully signed in with Google!", "success");
+            } catch (error) {
+                showMsg(error.message.replace('Firebase:', '').trim(), "error");
             }
         }
 
