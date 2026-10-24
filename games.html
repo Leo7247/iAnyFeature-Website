@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Console - iAnyFeature</title>
+    <link rel="icon" href="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #007aff; --bg: #f5f5f7; --card-bg: #ffffff; --text: #1d1d1f; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; padding-top: 80px; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: fixed; top: 0; width: 100%; z-index: 997; box-shadow: 0 1px 0 rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 80px; box-sizing: border-box; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.3rem; text-decoration: none; color: var(--text); }
+        .logo img { width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .menu-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--primary); padding: 0; }
+        
+        /* Premium iOS Menu Styles */
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.3s ease; z-index: 998; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+        .menu-overlay.open { opacity: 1; visibility: visible; }
+        
+        .nav-menu { position: fixed; top: 0; right: -300px; width: 300px; height: 100vh; background: #ffffff; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; z-index: 999; }
+        .nav-menu.open { right: 0; }
+        
+        .menu-header { height: 80px; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; border-bottom: 1px solid #f0f0f5; }
+        .close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--primary); padding: 0; transition: 0.2s; }
+        
+        .nav-menu a { padding: 20px 24px; text-decoration: none; color: #1d1d1f; font-weight: 500; font-size: 1.1rem; border-bottom: 1px solid #f0f0f5; display: flex; align-items: center; gap: 16px; transition: background 0.2s; }
+        .nav-menu a:hover { background: #f9f9fb; }
+        .nav-menu a i { width: 24px; text-align: center; font-size: 1.2rem; }
+        .nav-menu a.danger-link { color: #ff3b30; }
+        .nav-menu a.danger-link i { color: #ff3b30; }
+        
+        /* Game Page Specific Styles */
+        .page-header { text-align: center; padding: 40px 20px 20px; }
+        .page-header h1 { font-size: 2.5rem; margin: 0; }
+        .page-header p { font-size: 1.1rem; color: #8e8e93; margin-top: 10px; }
+
+        .container { max-width: 900px; margin: 0 auto 40px; padding: 0 20px; flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .nav-card { background: var(--card-bg); border-radius: 20px; padding: 30px; text-align: center; text-decoration: none; color: var(--text); box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: 0.3s; display: flex; flex-direction: column; align-items: center; border: 1px solid transparent; }
+        .nav-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(0,122,255,0.1); }
+        .nav-card i { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+        .nav-card h3 { margin: 10px 0; font-size: 1.5rem; }
+        .nav-card p { color: #555; line-height: 1.5; font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; }
+        .play-btn { background: var(--primary); color: white; padding: 10px 20px; border-radius: 12px; font-weight: bold; font-size: 1rem; display: inline-block; width: 100%; box-sizing: border-box; transition: 0.3s; }
+        .nav-card:hover .play-btn { background: #005bb5; }
+
+        footer { background: var(--card-bg); padding: 40px 20px; text-align: center; margin-top: auto; border-top: 1px solid rgba(0,0,0,0.05); }
+        .social-links { display: flex; justify-content: center; gap: 25px; font-size: 28px; }
+        .social-links a { color: #555; transition: 0.3s; }
+        .social-links a:hover { transform: scale(1.1); color: var(--primary); }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" target="_self" class="logo"><img src="https://yt3.ggpht.com/UiGTFSl6HLYxGQwsIubau4zxrOlIjlNdLDFJJ_3XTY-Tje0NUBTXGcMb8W2P5Vb2OzOMytFK5Q=s108-c-k-c0x00ffffff-no-rj"> iAnyFeature</a>
+        <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+    </header>
+
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+    <nav class="nav-menu" id="side-menu">
+        <div class="menu-header">
+            <button class="close-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        <a href="index.html" target="_self"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="apps.html" target="_self"><i class="fa-solid fa-mobile-screen"></i> My Apps</a>
+        <a href="altstore.html" target="_self"><i class="fa-solid fa-store"></i> AltStore Source</a>
+        <a href="games.html" target="_self"><i class="fa-solid fa-gamepad"></i> Game Console</a>
+        <a href="help.html" target="_self"><i class="fa-solid fa-circle-question"></i> Help & Guides</a>
+        <a href="respring.html" class="danger-link" target="_self"><i class="fa-solid fa-power-off"></i> Respring Portal</a>
+    </nav>
+
+    <div class="page-header">
+        <h1>Game Console</h1>
+        <p>Explore and play my custom browser-based interactive games and AR experiences.</p>
+    </div>
+
+    <div class="container">
+        <!-- Super Mario Runner AR Edition -->
+        <a href="https://leo7247.github.io/microbit/" target="_blank" class="nav-card">
+            <i class="fa-solid fa-person-running" style="color: #ff3b30;"></i>
+            <h3>Super Mario Runner AR</h3>
+            <p>An interactive, augmented reality endless runner experience powered by micro:bit. Jump into the action!</p>
+            <span class="play-btn">Play Now</span>
+        </a>
+
+        <!-- HandDraw AR -->
+        <a href="https://leo7247.github.io/HandDraw/" target="_blank" class="nav-card">
+            <i class="fa-solid fa-hand-pointer" style="color: #af52de;"></i>
+            <h3>HandDraw AR</h3>
+            <p>Unleash your creativity in augmented reality. Use your device's camera to draw directly in the air using hand tracking.</p>
+            <span class="play-btn">Play Now</span>
+        </a>
+
+        <!-- Flappy Bird -->
+        <a href="https://leo7247.github.io/Flappy_Bird-Online/" target="_blank" class="nav-card">
+            <i class="fa-solid fa-kiwi-bird" style="color: #ffcc00;"></i>
+            <h3>Flappy Bird</h3>
+            <p>The classic, frustratingly fun Flappy Bird game. Playable directly in your browser without needing to download anything.</p>
+            <span class="play-btn">Play Now</span>
+        </a>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://x.com/LeoLam1169458" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://discord.gg/vfAfChYeCc" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="letschat://invite?type=group&id=0Pwwaeo1CJWj9TTzwrN5" title="LetsChat" target="_blank"><i class="fa-solid fa-comment-dots"></i></a>
+            <a href="https://github.com/Leo7247/iAnyFeature" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+        <p style="color: #8e8e93; font-size: 0.9rem; margin-top: 20px;">© 2026 iAnyFeature. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() { 
+            document.getElementById('side-menu').classList.toggle('open'); 
+            document.getElementById('menu-overlay').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
